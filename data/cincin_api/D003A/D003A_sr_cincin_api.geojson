@@ -1,0 +1,758 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23720235,
+          -0.4249303
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-012",
+        "radius_m": 5.0,
+        "member_count": 671,
+        "suspect_count": 1,
+        "abnormal_count": 670,
+        "mean_ndre": 0.3737,
+        "mean_height_m": 0.0,
+        "severity_score": 506.263,
+        "priority": "High",
+        "zone": "Merah"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23759252,
+          -0.42757585
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-007",
+        "radius_m": 5.0,
+        "member_count": 84,
+        "suspect_count": 0,
+        "abnormal_count": 84,
+        "mean_ndre": 0.3756,
+        "mean_height_m": 0.0,
+        "severity_score": 65.244,
+        "priority": "High",
+        "zone": "Merah"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23649338,
+          -0.42263929
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-033",
+        "radius_m": 5.0,
+        "member_count": 48,
+        "suspect_count": 0,
+        "abnormal_count": 48,
+        "mean_ndre": 0.3779,
+        "mean_height_m": 0.0,
+        "severity_score": 38.221,
+        "priority": "High",
+        "zone": "Merah"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23657506,
+          -0.42323009
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-031",
+        "radius_m": 5.0,
+        "member_count": 40,
+        "suspect_count": 0,
+        "abnormal_count": 40,
+        "mean_ndre": 0.3659,
+        "mean_height_m": 0.0,
+        "severity_score": 32.341,
+        "priority": "High",
+        "zone": "Merah"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23804969,
+          -0.4265681
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-015",
+        "radius_m": 5.0,
+        "member_count": 33,
+        "suspect_count": 0,
+        "abnormal_count": 33,
+        "mean_ndre": 0.3785,
+        "mean_height_m": 0.0,
+        "severity_score": 26.965,
+        "priority": "High",
+        "zone": "Merah"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23786939,
+          -0.42697487
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-014",
+        "radius_m": 5.0,
+        "member_count": 12,
+        "suspect_count": 0,
+        "abnormal_count": 12,
+        "mean_ndre": 0.387,
+        "mean_height_m": 0.0,
+        "severity_score": 10.33,
+        "priority": "Medium",
+        "zone": "Oranye"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.2364278,
+          -0.42437623
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-026",
+        "radius_m": 5.0,
+        "member_count": 11,
+        "suspect_count": 0,
+        "abnormal_count": 11,
+        "mean_ndre": 0.3835,
+        "mean_height_m": 0.0,
+        "severity_score": 9.515,
+        "priority": "Medium",
+        "zone": "Oranye"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23627552,
+          -0.4240248
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-030",
+        "radius_m": 5.0,
+        "member_count": 10,
+        "suspect_count": 0,
+        "abnormal_count": 10,
+        "mean_ndre": 0.372,
+        "mean_height_m": 0.0,
+        "severity_score": 8.78,
+        "priority": "Medium",
+        "zone": "Oranye"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23706114,
+          -0.42438366
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-027",
+        "radius_m": 5.0,
+        "member_count": 9,
+        "suspect_count": 0,
+        "abnormal_count": 9,
+        "mean_ndre": 0.3747,
+        "mean_height_m": 0.0,
+        "severity_score": 7.903,
+        "priority": "Medium",
+        "zone": "Oranye"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23794704,
+          -0.42872845
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-005",
+        "radius_m": 5.0,
+        "member_count": 8,
+        "suspect_count": 0,
+        "abnormal_count": 8,
+        "mean_ndre": 0.378,
+        "mean_height_m": 0.0,
+        "severity_score": 7.02,
+        "priority": "Medium",
+        "zone": "Oranye"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23764091,
+          -0.42494026
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-023",
+        "radius_m": 5.0,
+        "member_count": 8,
+        "suspect_count": 0,
+        "abnormal_count": 8,
+        "mean_ndre": 0.3907,
+        "mean_height_m": 0.0,
+        "severity_score": 6.893,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23826616,
+          -0.42425208
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-029",
+        "radius_m": 5.0,
+        "member_count": 8,
+        "suspect_count": 0,
+        "abnormal_count": 8,
+        "mean_ndre": 0.3907,
+        "mean_height_m": 0.0,
+        "severity_score": 6.893,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23735619,
+          -0.42841371
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-006",
+        "radius_m": 5.0,
+        "member_count": 8,
+        "suspect_count": 0,
+        "abnormal_count": 8,
+        "mean_ndre": 0.3915,
+        "mean_height_m": 0.0,
+        "severity_score": 6.885,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.2382452,
+          -0.42603501
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-016",
+        "radius_m": 5.0,
+        "member_count": 6,
+        "suspect_count": 0,
+        "abnormal_count": 6,
+        "mean_ndre": 0.3758,
+        "mean_height_m": 0.0,
+        "severity_score": 5.342,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23825409,
+          -0.4256622
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-019",
+        "radius_m": 5.0,
+        "member_count": 6,
+        "suspect_count": 0,
+        "abnormal_count": 6,
+        "mean_ndre": 0.3859,
+        "mean_height_m": 0.0,
+        "severity_score": 5.241,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23828016,
+          -0.42324152
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-032",
+        "radius_m": 5.0,
+        "member_count": 6,
+        "suspect_count": 0,
+        "abnormal_count": 6,
+        "mean_ndre": 0.3919,
+        "mean_height_m": 0.0,
+        "severity_score": 5.181,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23709456,
+          -0.42712266
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-013",
+        "radius_m": 5.0,
+        "member_count": 5,
+        "suspect_count": 0,
+        "abnormal_count": 5,
+        "mean_ndre": 0.3783,
+        "mean_height_m": 0.0,
+        "severity_score": 4.467,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23768271,
+          -0.43054587
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-003",
+        "radius_m": 5.0,
+        "member_count": 5,
+        "suspect_count": 0,
+        "abnormal_count": 5,
+        "mean_ndre": 0.3817,
+        "mean_height_m": 0.0,
+        "severity_score": 4.433,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23794234,
+          -0.42516103
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-022",
+        "radius_m": 5.0,
+        "member_count": 5,
+        "suspect_count": 0,
+        "abnormal_count": 5,
+        "mean_ndre": 0.3866,
+        "mean_height_m": 0.0,
+        "severity_score": 4.384,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23714524,
+          -0.42803385
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-009",
+        "radius_m": 5.0,
+        "member_count": 5,
+        "suspect_count": 0,
+        "abnormal_count": 5,
+        "mean_ndre": 0.3909,
+        "mean_height_m": 0.0,
+        "severity_score": 4.341,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23823881,
+          -0.42491687
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-024",
+        "radius_m": 5.0,
+        "member_count": 4,
+        "suspect_count": 0,
+        "abnormal_count": 4,
+        "mean_ndre": 0.3748,
+        "mean_height_m": 0.0,
+        "severity_score": 3.652,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23722449,
+          -0.4224538
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-034",
+        "radius_m": 5.0,
+        "member_count": 4,
+        "suspect_count": 0,
+        "abnormal_count": 4,
+        "mean_ndre": 0.3879,
+        "mean_height_m": 0.0,
+        "severity_score": 3.521,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23667758,
+          -0.42773161
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-011",
+        "radius_m": 5.0,
+        "member_count": 4,
+        "suspect_count": 0,
+        "abnormal_count": 4,
+        "mean_ndre": 0.3896,
+        "mean_height_m": 0.0,
+        "severity_score": 3.504,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23683048,
+          -0.4256157
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-020",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3677,
+        "mean_height_m": 0.0,
+        "severity_score": 2.873,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23800236,
+          -0.43024289
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-004",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3747,
+        "mean_height_m": 0.0,
+        "severity_score": 2.803,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23704399,
+          -0.4307041
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-001",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3763,
+        "mean_height_m": 0.0,
+        "severity_score": 2.787,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23645938,
+          -0.42792313
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-010",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3772,
+        "mean_height_m": 0.0,
+        "severity_score": 2.778,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23672711,
+          -0.42817475
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-008",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3815,
+        "mean_height_m": 0.0,
+        "severity_score": 2.735,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23783528,
+          -0.42572937
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-017",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3822,
+        "mean_height_m": 0.0,
+        "severity_score": 2.728,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23611024,
+          -0.42548386
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-021",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3833,
+        "mean_height_m": 0.0,
+        "severity_score": 2.717,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23794171,
+          -0.42476732
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-025",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3885,
+        "mean_height_m": 0.0,
+        "severity_score": 2.665,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23804679,
+          -0.42577956
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-018",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3891,
+        "mean_height_m": 0.0,
+        "severity_score": 2.659,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.2382136,
+          -0.43059118
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-002",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3904,
+        "mean_height_m": 0.0,
+        "severity_score": 2.646,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23810446,
+          -0.42442101
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-028",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.3933,
+        "mean_height_m": 0.0,
+        "severity_score": 2.617,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    }
+  ],
+  "metadata": {
+    "source": "E:\\ARENA_PILOT\\CINCIN_API\\D003A\\D003A_sr_2026_input_cincin_api.csv",
+    "total_rings": 34,
+    "generated_by": "cincin_api.export_cincin_api_geojson"
+  }
+}

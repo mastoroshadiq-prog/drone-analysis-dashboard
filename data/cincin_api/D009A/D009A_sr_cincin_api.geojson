@@ -1,0 +1,32 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.23221876,
+          -0.44753731
+        ]
+      },
+      "properties": {
+        "ring_id": "RING-001",
+        "radius_m": 5.0,
+        "member_count": 3,
+        "suspect_count": 0,
+        "abnormal_count": 3,
+        "mean_ndre": 0.371,
+        "mean_height_m": 0.0,
+        "severity_score": 2.84,
+        "priority": "Low",
+        "zone": "Kuning"
+      }
+    }
+  ],
+  "metadata": {
+    "source": "E:\\ARENA_PILOT\\CINCIN_API\\D009A\\D009A_sr_2026_input_cincin_api.csv",
+    "total_rings": 1,
+    "generated_by": "cincin_api.export_cincin_api_geojson"
+  }
+}

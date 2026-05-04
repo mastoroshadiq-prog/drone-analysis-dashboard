@@ -1,0 +1,2 @@
+Ring_ID,Center_Longitude,Center_Latitude,Radius_m,Member_Count,Suspect_Count,Abnormal_Count,Mean_NDRE,Mean_Height_m,Severity_Score,Priority
+RING-001,109.23221876,-0.44753731,5.0,3,0,3,0.371,0.0,2.84,Low

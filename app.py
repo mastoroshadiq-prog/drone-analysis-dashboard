@@ -831,6 +831,19 @@ with st.sidebar:
         st.cache_data.clear()
         st.rerun()
 
+    if division == "AME II":
+        st.divider()
+        st.subheader("🔬 Eksperimental")
+        show_gano_chart = st.toggle(
+            "Ganoderma Lapangan vs Drone",
+            value=False,
+            help="Tampilkan chart perbandingan % serangan Ganoderma (inspeksi lapangan Stadium 1–4) "
+                 "vs % Stres Berat+Sangat Berat (Drone NDRE). "
+                 "Bersifat eksperimental — kedua metrik mengukur hal berbeda."
+        )
+    else:
+        show_gano_chart = False
+
     st.divider()
     if division == "AME II":
         st.caption("🔥 Cincin Api AME II")
@@ -1507,6 +1520,67 @@ DRONE_ABS_TO_UNIFIED = {"Critical":"Stres Sangat Berat","Sub-Optimal":"Stres Ber
                          "Moderate":"Stres Sedang","Good":"Stres Ringan"}
 DRONE_REL_TO_UNIFIED = {"Suspect":"Stres Sangat Berat","Abnormal":"Stres Berat",
                          "Normal":"Stres Sedang","Healthy":"Stres Ringan"}
+
+with tab4:
+    # ── Opsional: Perbandingan Ganoderma Lapangan vs Drone (toggle sidebar) ──
+    if show_gano_chart and not df_zone.empty:
+        st.divider()
+        st.markdown("### 🔬 Eksperimental — Ganoderma Lapangan vs Drone NDRE")
+        st.caption(
+            "**🟫 Lapangan** = % pohon terinfeksi Ganoderma (Stadium 1–4, inspeksi lapangan). "
+            "**🔵 Drone** = % pohon Stres Berat+Sangat Berat (NDRE umum). "
+            "⚠️ Nilai absolut tidak harus sama karena mengukur hal yang berbeda."
+        )
+        _sc_rows = []
+        for _, _zr in df_zone.iterrows():
+            _blk = _zr["Blok"]
+            if _blk not in GANO_FIELD:
+                continue
+            _gf       = GANO_FIELD[_blk]
+            _tot_gano = _gf["st12"] + _gf["st34"]
+            _sc_rows.append({
+                "Blok":      _blk,
+                "pct_field": round(_tot_gano / max(_gf["pokok"], 1) * 100, 1),
+                "pct_drone": round((_zr["Merah"] + _zr["Oranye"]) / max(_zr["Total_TM"], 1) * 100, 1),
+                "st12":      _gf["st12"],
+                "st34":      _gf["st34"],
+                "tot_gano":  _tot_gano,
+                "pokok":     _gf["pokok"],
+            })
+        if _sc_rows:
+            _df_sc = pd.DataFrame(_sc_rows).sort_values("pct_field", ascending=True)
+            _fig_gano = go.Figure()
+            _fig_gano.add_trace(go.Bar(
+                name="🟫 Ganoderma Lapangan (Stadium 1–4)",
+                y=_df_sc["Blok"], x=_df_sc["pct_field"],
+                orientation="h", marker_color="#8D6E63",
+                text=[f"{v}%  (St1&2:{r['st12']} + St3&4:{r['st34']} / {r['pokok']})"
+                      for v, (_, r) in zip(_df_sc["pct_field"], _df_sc.iterrows())],
+                textposition="outside", textfont=dict(color="#FFFFFF", size=10),
+                hovertemplate="<b>%{y}</b><br>% Ganoderma: %{x:.1f}%<extra></extra>",
+            ))
+            _fig_gano.add_trace(go.Bar(
+                name="🔵 Stres Berat+Sangat Berat (Drone NDRE Absolut)",
+                y=_df_sc["Blok"], x=_df_sc["pct_drone"],
+                orientation="h", marker_color="#1E88E5",
+                text=[f"{v}%" for v in _df_sc["pct_drone"]],
+                textposition="outside", textfont=dict(color="#FFFFFF", size=10),
+                hovertemplate="<b>%{y}</b><br>% Stres Berat+: %{x:.1f}%<extra></extra>",
+            ))
+            _fig_gano.update_layout(
+                barmode="group", height=400,
+                plot_bgcolor="#0E1117", paper_bgcolor="#0E1117",
+                font=dict(color="#FFFFFF"),
+                xaxis=dict(title="% dari Total Pohon per Blok", ticksuffix="%",
+                           gridcolor="rgba(255,255,255,0.08)", tickfont=dict(color="#FFFFFF")),
+                yaxis=dict(tickfont=dict(color="#FFFFFF", size=12)),
+                legend=dict(font=dict(color="#FFFFFF", size=11),
+                            bgcolor="rgba(255,255,255,0.05)",
+                            bordercolor="rgba(255,255,255,0.2)", borderwidth=1,
+                            orientation="h", y=1.08, x=0),
+                margin=dict(t=60, b=40, l=70, r=110),
+            )
+            st.plotly_chart(_fig_gano, use_container_width=True)
 
 # ════ Bagian bawah: Detail per Blok tunggal (masih di tab4/tab5 yang sama) ════
 with tab5:

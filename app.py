@@ -13,11 +13,9 @@ import plotly.express as px
 
 st.set_page_config(page_title="Cincin Api — AME II & AME IV", page_icon="🔥", layout="wide")
 
-# ── Deployment-agnostic paths (relative to this file) ────────────
-BASE_DIR   = Path(__file__).parent
-CINCIN_DIR = BASE_DIR / "data" / "cincin_api"
-ARENA_DIR  = BASE_DIR / "data" / "arena"
-SR_FILE    = BASE_DIR / "data" / "context" / "tabel_10blok_SR_banding.xlsx"
+CINCIN_DIR = Path(r"E:\ARENA_PILOT\CINCIN_API")
+ARENA_DIR  = Path(r"E:\ARENA_PILOT")
+SR_FILE    = Path(r"d:\PythonProjects\pre-scanning-webodm\context\tabel_10blok_SR_banding.xlsx")
 
 # ── AME II config ─────────────────────────────────────────────────
 BLOCKS = ["D001A","D002A","D003A","D004A","D005A","D009A","D010A","D011A","E001A","E002A"]
@@ -48,6 +46,22 @@ AREA_AME4 = {
 ZONE_CLR = {"Merah":"#E53935","Oranye":"#FB8C00","Kuning":"#FDD835","Hijau":"#43A047"}
 SR_CLR   = {"Stres Sangat Berat":"#B71C1C","Stres Berat":"#EF5350",
             "Stres Sedang":"#FFA726","Stres Ringan":"#66BB6A"}
+
+# ── Data Inspeksi Lapangan — Serangan Ganoderma per Blok (AME II) ──
+# Sumber: tabel serangan lapangan AME002, Pokok = total inventaris
+GANO_FIELD = {
+    "D001A": {"st12": 93,  "st34": 13, "pokok": 3484},
+    "D002A": {"st12": 47,  "st34":  0, "pokok": 3150},
+    "D003A": {"st12": 89,  "st34": 11, "pokok": 3131},
+    "D004A": {"st12": 51,  "st34": 13, "pokok": 2841},
+    "D005A": {"st12": 126, "st34": 44, "pokok": 2362},
+    "D006A": {"st12": 128, "st34": 32, "pokok": 2391},  # no drone data
+    "D009A": {"st12": 95,  "st34": 30, "pokok": 2614},
+    "D010A": {"st12": 60,  "st34": 21, "pokok": 2575},
+    "D011A": {"st12": 149, "st34": 24, "pokok": 2160},
+    "E001A": {"st12": 80,  "st34": 19, "pokok": 3014},
+    "E002A": {"st12": 62,  "st34": 12, "pokok": 2859},
+}
 
 # ── load summary ──────────────────────────────────────────────────
 @st.cache_data
@@ -1049,58 +1063,51 @@ with tab2:
     mk3.metric("🟢 Pohon TM",  f"{len(df_trees_viz):,}")
     mk4.metric("🔵 Ring Abs",  f"{len(r_abs_viz)}" if not r_abs_viz.empty else "—")
 
-    # ── Distribusi Stres Pohon ────────────────────────────────────────
-    with st.expander("📊 Distribusi Stres Pohon — SR vs Drone", expanded=False):
-        bd1, bd2 = st.columns(2, gap="large")
+    # ── KPI Distribusi Stres — SR 2026 vs Drone Absolut ──────────────
+    # (ditampilkan langsung di atas dua visualisasi Cincin Api)
+    _ABS_MAP2  = {"Critical": "Stres Sangat Berat", "Sub-Optimal": "Stres Berat",
+                  "Moderate": "Stres Sedang",       "Good": "Stres Ringan"}
+    # SR counts per kategori
+    _sr_vc_kpi = {}
+    if not df_sr_viz.empty and "KLASSNDRE2_26" in df_sr_viz.columns:
+        _sr_vc_kpi = df_sr_viz["KLASSNDRE2_26"].str.strip().value_counts().to_dict()
+    # Drone Absolute counts per kategori
+    _df_tv_kpi = apply_population_filter(load_trees(blok_viz, division), include_tbm, include_kenth)
+    _drone_vc_kpi = {}
+    if not _df_tv_kpi.empty and "Health_Status_Abs" in _df_tv_kpi.columns:
+        _drone_vc_kpi = _df_tv_kpi["Health_Status_Abs"].map(_ABS_MAP2).value_counts().to_dict()
 
-        with bd1:
-            st.markdown("**🌿 Distribusi Stres — Data SR 2026**")
-            if not df_sr_viz.empty and "KLASSNDRE2_26" in df_sr_viz.columns:
-                _sr_ndre = pd.to_numeric(df_sr_viz["NDRE2_26"], errors="coerce")
-                _sr_dist = (df_sr_viz.assign(_ndre=_sr_ndre)
-                            .groupby("KLASSNDRE2_26")
-                            .agg(Jumlah=("KLASSNDRE2_26", "count"),
-                                 Mean_NDRE=("_ndre", "mean"))
-                            .reset_index()
-                            .rename(columns={"KLASSNDRE2_26": "Kategori Stres"}))
-                _sr_dist["Mean_NDRE"] = _sr_dist["Mean_NDRE"].round(4)
-                _order = {"Stres Sangat Berat": 0, "Stres Berat": 1,
-                          "Stres Sedang": 2, "Stres Ringan": 3}
-                _sr_dist["_o"] = _sr_dist["Kategori Stres"].map(_order).fillna(9)
-                _sr_dist = _sr_dist.sort_values("_o").drop(columns=["_o"])
-                st.dataframe(_sr_dist, use_container_width=True, hide_index=True)
-            else:
-                st.info("Data SR tidak tersedia untuk blok ini")
+    st.markdown("#### 📊 Distribusi Stres — SR 2026 vs Drone Absolut")
+    _kl, _kr = st.columns(2, gap="large")
 
-        with bd2:
-            st.markdown("**🚁 Distribusi Stres — Drone Absolut**")
-            _df_tv = load_trees(blok_viz, division)
-            _df_tv = apply_population_filter(_df_tv, include_tbm, include_kenth)
-            if not _df_tv.empty:
-                _hs_col   = "Health_Status_Abs" if "Health_Status_Abs" in _df_tv.columns \
-                            else "Health_Status"
-                _ndre_col = "NDRE_Absolute"     if "NDRE_Absolute"     in _df_tv.columns \
-                            else "NDRE_Value"
-                _ABS_MAP  = {"Critical": "Stres Sangat Berat", "Sub-Optimal": "Stres Berat",
-                             "Moderate": "Stres Sedang",       "Good": "Stres Ringan"}
-                _REL_MAP  = {"Suspect": "Stres Sangat Berat",  "Abnormal": "Stres Berat",
-                             "Normal": "Stres Sedang",          "Healthy": "Stres Ringan"}
-                _lmap = _ABS_MAP if _hs_col == "Health_Status_Abs" else _REL_MAP
-                _df_tv["_label"] = _df_tv[_hs_col].map(_lmap).fillna(_df_tv[_hs_col])
-                _ndre_s = pd.to_numeric(_df_tv[_ndre_col], errors="coerce")
-                _drone_dist = (_df_tv.assign(_ndre=_ndre_s)
-                               .groupby("_label")
-                               .agg(Jumlah=("_label", "count"), Mean_NDRE=("_ndre", "mean"))
-                               .reset_index()
-                               .rename(columns={"_label": "Kategori Stres"}))
-                _drone_dist["Mean_NDRE"] = _drone_dist["Mean_NDRE"].round(4)
-                _order = {"Stres Sangat Berat": 0, "Stres Berat": 1,
-                          "Stres Sedang": 2, "Stres Ringan": 3}
-                _drone_dist["_o"] = _drone_dist["Kategori Stres"].map(_order).fillna(9)
-                _drone_dist = _drone_dist.sort_values("_o").drop(columns=["_o"])
-                st.dataframe(_drone_dist, use_container_width=True, hide_index=True)
-            else:
-                st.info("Data drone tidak tersedia")
+    _sr_tot   = max(sum(_sr_vc_kpi.values()),   1)
+    _dr_tot   = max(sum(_drone_vc_kpi.values()), 1)
+
+    def _pct(vc, key, total):
+        return f"{vc.get(key, 0) / total * 100:.1f}%"
+
+    with _kl:
+        st.markdown("**🌿 SR 2026**")
+        ks1, ks2, ks3, ks4 = st.columns(4)
+        ks1.metric("🔴 Sangat Berat", f"{_sr_vc_kpi.get('Stres Sangat Berat', 0):,}",
+                   _pct(_sr_vc_kpi, 'Stres Sangat Berat', _sr_tot), delta_color="off")
+        ks2.metric("🟠 Berat",        f"{_sr_vc_kpi.get('Stres Berat',        0):,}",
+                   _pct(_sr_vc_kpi, 'Stres Berat',        _sr_tot), delta_color="off")
+        ks3.metric("🟡 Sedang",       f"{_sr_vc_kpi.get('Stres Sedang',       0):,}",
+                   _pct(_sr_vc_kpi, 'Stres Sedang',       _sr_tot), delta_color="off")
+        ks4.metric("🟢 Ringan",       f"{_sr_vc_kpi.get('Stres Ringan',       0):,}",
+                   _pct(_sr_vc_kpi, 'Stres Ringan',       _sr_tot), delta_color="off")
+    with _kr:
+        st.markdown("**🚁 Drone Absolut**")
+        kd1, kd2, kd3, kd4 = st.columns(4)
+        kd1.metric("🔴 Sangat Berat", f"{_drone_vc_kpi.get('Stres Sangat Berat', 0):,}",
+                   _pct(_drone_vc_kpi, 'Stres Sangat Berat', _dr_tot), delta_color="off")
+        kd2.metric("🟠 Berat",        f"{_drone_vc_kpi.get('Stres Berat',        0):,}",
+                   _pct(_drone_vc_kpi, 'Stres Berat',        _dr_tot), delta_color="off")
+        kd3.metric("🟡 Sedang",       f"{_drone_vc_kpi.get('Stres Sedang',       0):,}",
+                   _pct(_drone_vc_kpi, 'Stres Sedang',       _dr_tot), delta_color="off")
+        kd4.metric("🟢 Ringan",       f"{_drone_vc_kpi.get('Stres Ringan',       0):,}",
+                   _pct(_drone_vc_kpi, 'Stres Ringan',       _dr_tot), delta_color="off")
 
     col_sr, col_dr = st.columns(2, gap="small")
 

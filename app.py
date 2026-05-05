@@ -13,6 +13,24 @@ import plotly.express as px
 
 st.set_page_config(page_title="Cincin Api — AME II & AME IV", page_icon="🔥", layout="wide")
 
+# Styling metric delta: background hijau, teks putih, tanpa panah
+st.markdown("""
+<style>
+[data-testid="stMetricDelta"] svg { display: none; }
+[data-testid="stMetricDelta"] {
+    background-color: #4CAF50 !important;
+    color: #FFFFFF !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    padding: 2px 8px !important;
+    display: inline-block !important;
+}
+[data-testid="stMetricDelta"] * { color: #FFFFFF !important; }
+</style>
+""", unsafe_allow_html=True)
+
+
 CINCIN_DIR = Path(r"E:\ARENA_PILOT\CINCIN_API")
 ARENA_DIR  = Path(r"E:\ARENA_PILOT")
 SR_FILE    = Path(r"d:\PythonProjects\pre-scanning-webodm\context\tabel_10blok_SR_banding.xlsx")
@@ -837,6 +855,21 @@ with st.sidebar:
         show_gano_chart = st.toggle(
             "Ganoderma Lapangan vs Drone",
             value=False,
+            help=(
+                "Tampilkan chart perbandingan % serangan Ganoderma "
+                "(inspeksi lapangan Stadium 1–4) vs % Stres Berat+Sangat Berat "
+                "(Drone NDRE). Bersifat eksperimental."
+            ),
+        )
+    else:
+        show_gano_chart = False
+
+    if division == "AME II":
+        st.divider()
+        st.subheader("🔬 Eksperimental")
+        show_gano_chart = st.toggle(
+            "Ganoderma Lapangan vs Drone",
+            value=False,
             help="Tampilkan chart perbandingan % serangan Ganoderma (inspeksi lapangan Stadium 1–4) "
                  "vs % Stres Berat+Sangat Berat (Drone NDRE). "
                  "Bersifat eksperimental — kedua metrik mengukur hal berbeda."
@@ -1138,7 +1171,15 @@ with tab2:
             df_sr_ca["_p"] = df_sr_ca["_p"].astype(int)
             df_sr_ca["_x"] = df_sr_ca["_p"] + (df_sr_ca["_b"] % 2) * 0.5
             df_sr_ca["_y"] = df_sr_ca["_b"]
-            df_sr_ca = calc_cincin_api(df_sr_ca, val_col="NDRE2_26", threshold=0.15)
+            # Gunakan KLASSNDRE2_26 → konsisten dengan KPI di atas
+            _klass_to_hs = {
+                "Stres Sangat Berat": "Critical",
+                "Stres Berat":        "Sub-Optimal",
+                "Stres Sedang":       "Moderate",
+                "Stres Ringan":       "Good",
+            }
+            df_sr_ca["_hs"]    = df_sr_ca["klass_norm"].map(_klass_to_hs).fillna("Good")
+            df_sr_ca["_parit"] = False
             fig_csr = make_cincin_hex(
                 df_grid=df_sr_ca,
                 health_col="_hs",
@@ -1426,12 +1467,17 @@ with tab4:
     # KPIs
     if not df_zone.empty:
         tot = df_zone.Total_TM.sum()
+        _pct_z = lambda n: f"{n / max(tot, 1) * 100:.1f}%"
         c1,c2,c3,c4,c5 = st.columns(5)
-        c1.metric("Total Pohon TM",f"{tot:,}")
-        c2.metric("🔴 Stres Sangat Berat", f"{df_zone.Merah.sum():,}")
-        c3.metric("🔴 Stres Berat",        f"{df_zone.Oranye.sum():,}")
-        c4.metric("🟡 Stres Sedang",       f"{df_zone.Kuning.sum():,}")
-        c5.metric("🟢 Stres Ringan",       f"{df_zone.Hijau.sum():,}")
+        c1.metric("Total Pohon TM",      f"{tot:,}")
+        c2.metric("🔴 Stres Sangat Berat", f"{df_zone.Merah.sum():,}",
+                  _pct_z(df_zone.Merah.sum()),  delta_color="off")
+        c3.metric("🔴 Stres Berat",        f"{df_zone.Oranye.sum():,}",
+                  _pct_z(df_zone.Oranye.sum()), delta_color="off")
+        c4.metric("🟡 Stres Sedang",       f"{df_zone.Kuning.sum():,}",
+                  _pct_z(df_zone.Kuning.sum()), delta_color="off")
+        c5.metric("🟢 Stres Ringan",       f"{df_zone.Hijau.sum():,}",
+                  _pct_z(df_zone.Hijau.sum()),  delta_color="off")
 
         fig_z = go.Figure()
         # Urutan: dari paling kritis ke paling sehat (stack bawah ke atas)
@@ -1480,6 +1526,29 @@ with tab4:
 
         # ── Perbandingan SR 2026 — chart kedua (AME II saja) ───────────
         if division == "AME II" and df_zone["SR_Total"].sum() > 0:
+            st.divider()
+            st.markdown("#### 🌿 4-Zona Kesehatan per Blok — Data SR 2026")
+            st.caption(
+                "⚠️ Data SR tidak difilter per klasifikasi pohon (TM/TBM/Kenthosan) — "
+                "mencakup seluruh pohon dalam dataset SR 2026. "
+                "Jumlah total SR dapat berbeda dari data Drone (TM only)."
+            )
+            _sr_tot_all = int(df_zone["SR_Total"].sum())
+            _sr_m_all   = int(df_zone["SR_Merah"].sum())
+            _sr_o_all   = int(df_zone["SR_Oranye"].sum())
+            _sr_k_all   = int(df_zone["SR_Kuning"].sum())
+            _sr_h_all   = int(df_zone["SR_Hijau"].sum())
+            _pct_sr     = lambda n: f"{n / max(_sr_tot_all, 1) * 100:.1f}%"
+            cs1, cs2, cs3, cs4, cs5 = st.columns(5)
+            cs1.metric("Total Pohon SR",       f"{_sr_tot_all:,}")
+            cs2.metric("🔴 Stres Sangat Berat", f"{_sr_m_all:,}",
+                       _pct_sr(_sr_m_all),  delta_color="off")
+            cs3.metric("🔴 Stres Berat",        f"{_sr_o_all:,}",
+                       _pct_sr(_sr_o_all), delta_color="off")
+            cs4.metric("🟡 Stres Sedang",       f"{_sr_k_all:,}",
+                       _pct_sr(_sr_k_all), delta_color="off")
+            cs5.metric("🟢 Stres Ringan",       f"{_sr_h_all:,}",
+                       _pct_sr(_sr_h_all),  delta_color="off")
             fig_sr_z = go.Figure()
             for col_sr, lbl_sr, clr_sr, txt_sr in [
                 ("SR_Merah",  "Stres Sangat Berat (SR 2026)", "#B71C1C", "#FFFFFF"),
@@ -1520,6 +1589,68 @@ DRONE_ABS_TO_UNIFIED = {"Critical":"Stres Sangat Berat","Sub-Optimal":"Stres Ber
                          "Moderate":"Stres Sedang","Good":"Stres Ringan"}
 DRONE_REL_TO_UNIFIED = {"Suspect":"Stres Sangat Berat","Abnormal":"Stres Berat",
                          "Normal":"Stres Sedang","Healthy":"Stres Ringan"}
+
+with tab4:
+    # ── Opsional: Perbandingan Ganoderma Lapangan vs Drone (toggle sidebar) ──
+    if show_gano_chart and not df_zone.empty:
+        st.divider()
+        st.markdown("### 🔬 Eksperimental — Ganoderma Lapangan vs Drone NDRE")
+        st.caption(
+            "**🟫 Lapangan** = % pohon terinfeksi Ganoderma (Stadium 1–4, inspeksi lapangan). "
+            "**🔵 Drone** = % pohon Stres Berat+Sangat Berat (NDRE umum). "
+            "⚠️ Nilai absolut tidak harus sama karena mengukur hal yang berbeda."
+        )
+        _sc_rows = []
+        for _, _zr in df_zone.iterrows():
+            _blk = _zr["Blok"]
+            if _blk not in GANO_FIELD:
+                continue
+            _gf       = GANO_FIELD[_blk]
+            _tot_gano = _gf["st12"] + _gf["st34"]
+            _sc_rows.append({
+                "Blok":      _blk,
+                "pct_field": round(_tot_gano / max(_gf["pokok"], 1) * 100, 1),
+                "pct_drone": round((_zr["Merah"] + _zr["Oranye"]) / max(_zr["Total_TM"], 1) * 100, 1),
+                "st12":      _gf["st12"],
+                "st34":      _gf["st34"],
+                "tot_gano":  _tot_gano,
+                "pokok":     _gf["pokok"],
+            })
+        if _sc_rows:
+            _df_sc = pd.DataFrame(_sc_rows).sort_values("pct_field", ascending=True)
+            _fig_gano = go.Figure()
+            _fig_gano.add_trace(go.Bar(
+                name="🟫 Ganoderma Lapangan (Stadium 1–4)",
+                y=_df_sc["Blok"], x=_df_sc["pct_field"],
+                orientation="h", marker_color="#8D6E63",
+                text=[f"{v}%  (St1&2:{r['st12']} + St3&4:{r['st34']} / {r['pokok']})" 
+                      for v, (_, r) in zip(_df_sc["pct_field"], _df_sc.iterrows())],
+                textposition="outside", textfont=dict(color="#FFFFFF", size=10),
+                hovertemplate="<b>%{y}</b><br>% Ganoderma: %{x:.1f}%<extra></extra>",
+            ))
+            _fig_gano.add_trace(go.Bar(
+                name="🔵 Stres Berat+Sangat Berat (Drone NDRE Absolut)",
+                y=_df_sc["Blok"], x=_df_sc["pct_drone"],
+                orientation="h", marker_color="#1E88E5",
+                text=[f"{v}%" for v in _df_sc["pct_drone"]],
+                textposition="outside", textfont=dict(color="#FFFFFF", size=10),
+                hovertemplate="<b>%{y}</b><br>% Stres Berat+: %{x:.1f}%<extra></extra>",
+            ))
+            _fig_gano.update_layout(
+                barmode="group", height=400,
+                plot_bgcolor="#0E1117", paper_bgcolor="#0E1117",
+                font=dict(color="#FFFFFF"),
+                xaxis=dict(title="% dari Total Pohon per Blok", ticksuffix="%",
+                           gridcolor="rgba(255,255,255,0.08)", tickfont=dict(color="#FFFFFF")),
+                yaxis=dict(tickfont=dict(color="#FFFFFF", size=12)),
+                legend=dict(font=dict(color="#FFFFFF", size=11),
+                            bgcolor="rgba(255,255,255,0.05)",
+                            bordercolor="rgba(255,255,255,0.2)", borderwidth=1,
+                            orientation="h", y=1.08, x=0),
+                margin=dict(t=60, b=40, l=70, r=110),
+            )
+            st.plotly_chart(_fig_gano, use_container_width=True)
+
 
 with tab4:
     # ── Opsional: Perbandingan Ganoderma Lapangan vs Drone (toggle sidebar) ──
@@ -1760,22 +1891,4 @@ with tab5:
         )
 
 
-    # ── Bar 3 sumber per kelas ───────────────────────────────────
-    st.markdown("### Jumlah Pohon per Kelas — 3 Sumber Side-by-Side")
-    bar_rows = [{"Kelas":lbl,
-                 "Data SR 2026":int(vc_sr_u.get(lbl,0)),
-                 "NDRE Drone Relatif":int(vc_rel_u.get(lbl,0)),
-                 "NDRE Drone Absolut":int(vc_abs_u.get(lbl,0))}
-                for lbl in UNIFIED_LABELS]
-    df_bar = pd.DataFrame(bar_rows)
-    fig_bar3 = go.Figure()
-    for src, clr_src in [("Data SR 2026","#8D6E63"),("NDRE Drone Relatif","#42A5F5"),("NDRE Drone Absolut","#66BB6A")]:
-        fig_bar3.add_trace(go.Bar(name=src, x=df_bar["Kelas"], y=df_bar[src],
-            marker_color=clr_src, text=df_bar[src], textposition="outside"))
-    fig_bar3.update_layout(barmode="group",
-        title=f"Perbandingan 3 Sumber per Kelas — {sel}",
-        xaxis=dict(categoryorder="array", categoryarray=UNIFIED_LABELS),
-        legend=dict(font_color="white", bgcolor="rgba(0,0,0,0)"),
-        height=380, plot_bgcolor="#0E1117", paper_bgcolor="#0E1117", font_color="white")
-    st.plotly_chart(fig_bar3, use_container_width=True)
 
